@@ -1,8 +1,9 @@
 # Online Shop
 
-<img src="https://github.com/ENelyubova/online-shop/blob/master/app-1.gif">
-<img src="https://github.com/ENelyubova/online-shop/blob/master/app-2.gif">
-
+<div>
+  <img src="https://github.com/EARodina/online-shop/blob/main/app-1.gif" width="48%">&nbsp;
+  <img src="https://github.com/EARodina/online-shop/blob/main/app-2.gif" width="48%">
+</div>
 
 # Tech Stack
 
