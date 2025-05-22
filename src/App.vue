@@ -57,7 +57,7 @@ provide('cart', {
     />
   </transition>
 
-  <div class="w-11/12 md:w-4/5 max-w-7xl m-auto h-full bg-white rounded-xl shadow-xl my-3 md:my-14">
+  <div class="w-11/12 md:w-4/5 max-w-7xl m-auto bg-white rounded-xl shadow-xl my-3 md:my-14">
     <Header 
       :total-price="totalPrice"
       :cart-count="cartCount"

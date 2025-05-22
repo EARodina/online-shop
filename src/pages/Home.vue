@@ -1,19 +1,28 @@
 <script setup>
-import { ref, reactive,  watch, onMounted, inject } from 'vue'
+import { ref, computed, reactive,  watch, onMounted, inject } from 'vue'
 import axios from 'axios'
 import debounce from 'lodash.debounce'
 import CardList from '../components/CardList.vue'
 import Loader from '../components/Loader.vue'
+import Pagination from '@/components/Pagination.vue'
 
 const { cart, addToCart, removeFromCart } = inject('cart')
 
 const items = ref([])
 const isLoading = ref(false)
+const currentPage = ref(1)
+const totalPages = ref(0)
+const totalItems = ref(0)
+const itemsPerPage = 8
 
 const filters = reactive({
   // sortBy: 'title',
   sortBy: '',
   searchQuery: ''
+})
+
+const visibleRange = computed(() => {
+  return Math.min(currentPage.value * itemsPerPage, totalItems.value)
 })
 
 const onClickAddPlus = (item) => {
@@ -85,6 +94,8 @@ const fetchItems = async () => {
 
     const params = {
       sortBy: filters.sortBy,
+      page: currentPage.value,
+      limit: itemsPerPage
     }
 
     if (filters.searchQuery) {
@@ -97,12 +108,15 @@ const fetchItems = async () => {
       }
     )
 
-    items.value = data.map(obj => ({
+    items.value = data.items.map(obj => ({
       ...obj,
       isFavorite: false,
       favoriteId: null,
       isAdded: false
     }))
+
+    totalPages.value = data.meta.total_pages
+    totalItems.value = data.meta.total_items
 
     isLoading.value = false
   } catch(e) {
@@ -111,6 +125,7 @@ const fetchItems = async () => {
 }
 
 watch(filters, fetchItems)
+watch(currentPage, fetchItems)
 
 watch(cart, () => {
   items.value = items.value.map((item) => ({
@@ -157,6 +172,16 @@ onMounted(async () => {
 
   <div class="mt-10">
     <CardList :items="items" @add-to-favorite="addToFavorite"  @add-to-cart="onClickAddPlus"/>
+    <hr class="my-10 border border-slate-100">
+    <div v-if="totalPages" class="flex flex-wrap justify-between items-center gap-4">
+      <Pagination 
+        v-model="currentPage"
+        :total-pages="totalPages"
+      />
+      <div class="text-sm text-gray-500">
+        Вы посмотрели {{ visibleRange }} из {{ totalItems }} товаров
+      </div>
+    </div>
   </div>
 </template>
 

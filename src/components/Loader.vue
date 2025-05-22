@@ -10,9 +10,13 @@
 .lds-facebook {
   display: block;
   margin: auto;
-  position: relative;
   width: 80px;
   height: 80px;
+  position: absolute;
+  top: 380px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
 }
 
 .lds-facebook div {
